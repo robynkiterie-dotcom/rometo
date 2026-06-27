@@ -406,3 +406,71 @@ function makePayment(){
 
 }
 </script>
+            <?php
+
+$consumerKey = "YOUR_CONSUMER_KEY";
+$consumerSecret = "YOUR_CONSUMER_SECRET";
+
+$BusinessShortCode = "YOUR_PAYBILL";
+$Passkey = "YOUR_PASSKEY";
+
+$data = json_decode(file_get_contents("php://input"));
+
+$phone = $data->phone;
+$amount = $data->amount;
+
+$timestamp = date("YmdHis");
+
+$password = base64_encode(
+$BusinessShortCode.$Passkey.$timestamp
+);
+
+
+$curl = curl_init();
+
+curl_setopt($curl,CURLOPT_URL,
+"https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials");
+
+curl_setopt($curl,CURLOPT_HTTPHEADER,[
+"Authorization: Basic ".base64_encode(
+$consumerKey.":".$consumerSecret
+)
+]);
+
+curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
+
+$result = json_decode(curl_exec($curl));
+
+$token = $result->access_token;
+
+
+curl_setopt($curl,CURLOPT_URL,
+"https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest");
+
+curl_setopt($curl,CURLOPT_HTTPHEADER,[
+"Authorization: Bearer ".$token,
+"Content-Type: application/json"
+]);
+
+
+$payload = [
+"BusinessShortCode"=>$BusinessShortCode,
+"Password"=>$password,
+"Timestamp"=>$timestamp,
+"TransactionType"=>"CustomerPayBillOnline",
+"Amount"=>$amount,
+"PartyA"=>$phone,
+"PartyB"=>$BusinessShortCode,
+"PhoneNumber"=>$phone,
+"CallBackURL"=>"https://yourwebsite.com/callback.php",
+"AccountReference"=>"Rometo Tech Cyber",
+"TransactionDesc"=>"Printing Payment"
+];
+
+
+curl_setopt($curl,CURLOPT_POST,true);
+curl_setopt($curl,CURLOPT_POSTFIELDS,json_encode($payload));
+
+echo curl_exec($curl);
+
+?>
