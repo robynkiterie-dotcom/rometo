@@ -13,6 +13,7 @@ html<!DOCTYPE html>
             --dark: #1A1A1A;
             --light: #F9F9F9;
             --white: #FFFFFF;
+            --mpesa: #43B02A;
         }
         
         * {
@@ -202,6 +203,78 @@ html<!DOCTYPE html>
             background-color: #0052cc;
         }
 
+        /* Payment Modal Popup Box */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            text-align: center;
+        }
+
+        .mpesa-header {
+            background-color: var(--mpesa);
+            color: var(--white);
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .payment-amount {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 15px 0;
+        }
+
+        .instructions-box {
+            text-align: left;
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .instructions-box ol {
+            padding-left: 20px;
+        }
+
+        .instructions-box li {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .close-btn {
+            background-color: var(--dark);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+        }
+
         /* Founder & Info Section */
         .info-grid {
             display: grid;
@@ -283,38 +356,6 @@ html<!DOCTYPE html>
     <!-- Booking Form -->
     <section id="book" class="booking-section">
         <h2 class="section-title">Order Printing Services Online</h2>
-        <form action="#" method="POST" enctype="multipart/form-data" onsubmit="alert('Thank you! Your files have been sent to Rometo Tech. Please visit our shop next to KCB Bank to pick them up.'); return false;">
+        <form id="printForm" onsubmit="handleOrderSubmit(event)">
             <div class="form-group">
                 <label for="name">Your Full Name</label>
-                <input type="text" id="name" required placeholder="Enter your name">
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number (M-Pesa)</label>
-                <input type="tel" id="phone" required placeholder="07... or 01...">
-            </div>
-            <div class="form-group">
-                <label for="service">Print Type</label>
-                <select id="service" required>
-                    <option value="bw">Black & White Printing (KES 10/pg)</option>
-                    <option value="color">Color Printing (KES 30/pg)</option>
-                    <option value="other">Official Documents / Government Application Support</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="file">Upload Document (PDF, Word, or Photo)</label>
-                <input type="file" id="file" required>
-            </div>
-            <div class="form-group">
-                <label for="instructions">Specific Instructions (Optional)</label>
-                <textarea id="instructions" rows="3" placeholder="E.g., Print 2 copies, double-sided..."></textarea>
-            </div>
-            <button type="submit">Submit Order & Send Files</button>
-        </form>
-    </section>
-
-    <!-- About & Location -->
-    <section id="about">
-        <div class="info-grid">
-            <div class="founder-box">
-                <h3>Meet the Founder</h3>
-                <p style="margin-top: 15px; font-style: italic;">"At Rometo Tech Cyber, we bridge the digital gap in Turkana County by providing top-tier technology solutions with speed and honesty."</p>
