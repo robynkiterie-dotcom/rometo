@@ -370,10 +370,39 @@ html<!DOCTYPE html>
                 <div class="cost">KES 30</div>
                 <p>Per page. Vibrant graphic layouts, photos, and project designs.</p>
             </div>
-Use code with caution.Gov PortalsFrom KES 300Expert assistance with KRA, eCitizen, NTSA, and applications.LIPA NA M-PESAThank you for your order! Please complete payment to start processing.KES 0KCB PaybillDirect M-PesaKCB Paybill Steps:Go to M-Pesa > Lipa na M-Pesa.Select Pay Bill.Enter Business No: 522533Enter Account No: 7967280Enter Amount: KES 0Enter M-Pesa PIN and complete.Direct Send Money Steps:Go to M-Pesa > Send Money.Enter Phone No: 0705620316Name check: Robinson KiterieEnter Amount: KES 0Enter M-Pesa PIN and complete.After paying, come to our shop next to KCB Bank with your reference text message to finalize your checkout.I Have Sent Payment / Close© 2026 Rometo Tech Cyber. All Rights Reserved. Managed by Robinson Kiplangat Kiterie.function togglePagesInput() {const service = document.getElementById('service').value;const pagesGroup = document.getElementById('pagesGroup');if (service == "100") {pagesGroup.style.display = "none";} else {pagesGroup.style.display = "block";}}function handleOrderSubmit(event) {event.preventDefault();const rate = parseInt(document.getElementById('service').value);const pages = parseInt(document.getElementById('pages').value) || 1;let total = rate;if (rate !== 100) {total = rate * pages;}document.getElementById('totalDisplay').innerText = "KES " + total;const amountLabels = document.getElementsByClassName('instructionAmount');for(let i = 0; i < amountLabels.length; i++) {amountLabels[i].innerText = "KES " + total;}switchMethod('paybill');document.getElementById('paymentModal').style.display = "flex";}function switchMethod(method) {const pbBtn = document.getElementById('paybillBtn');const dBtn = document.getElementById('directBtn');const pbBox = document.getElementById('paybillInstructions');const dBox = document.getElementById('directInstructions');if (method === 'paybill') {pbBtn.classList.add('active');dBtn.classList.remove('active');pbBox.style.display = "block";dBox.style.display = "none";} else {dBtn.classList.add('active');pbBtn.classList.remove('active');dBox.style.display = "block";pbBox.style.display = "none";}}function closeModal() {document.getElementById('paymentModal').style.display = "none";document.getElementById('printForm').reset();togglePagesInput();}
-### 🚀 What this script update does:
-*   **Automatic calculations**: If a user uploads a 5-page document for color printing, it multiplies KES 30 × 5 pages and instantly prompts them to send exactly **KES 150**.
-*   **Split Tabs**: The customer can easily tap between "KCB Paybill" and "Direct M-Pesa" methods inside the prompt overlay window.
-*   **Error-free Details**: Displays your correct details (Paybill: 522533, Account: 7967280) and personal details (0705620316 - Robinson Kiterie).
+            <div class="form-group">
+    <label>M-Pesa Phone Number</label>
+    <input type="text" id="phone" placeholder="07XXXXXXXX" required>
+</div>
 
-If you'd like to scale this or require any additional features later, let me know if you would eventually want to explore integrating **Daraja API STK Push** so that a customer receives an automated PIN request directly on their phone screen when they click order!
+<button type="button" onclick="makePayment()">
+    Pay Now via M-Pesa
+</button>
+
+<script>
+function makePayment(){
+
+    let phone = document.getElementById("phone").value;
+    let amount = document.getElementById("totalDisplay").innerText
+                  .replace("KES ","");
+
+    fetch("stkpush.php", {
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            phone:phone,
+            amount:amount
+        })
+    })
+    .then(response=>response.json())
+    .then(data=>{
+        alert("Payment request sent. Check your phone for M-Pesa PIN prompt.");
+    })
+    .catch(error=>{
+        alert("Payment failed. Try again.");
+    });
+
+}
+</script>
